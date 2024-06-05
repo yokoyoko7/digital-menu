@@ -6,6 +6,7 @@ import Restaurants from "./restaurants";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Menu from "./menu";
+import QRCodes from "./qr-codes";
 
 type UserData = {
   userId: string;
@@ -40,6 +41,7 @@ const Admin = () => {
           element={<Restaurants id={user?.userId!} />}
         />
         <Route path="/menu" element={<Menu id={user?.userId!} />} />
+        <Route path="/qrcodes" element={<QRCodes id={user?.userId!} />} />
       </Routes>
     </div>
   );

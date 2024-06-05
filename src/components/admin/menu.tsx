@@ -40,7 +40,7 @@ const Menu = ({ id }: { id: string }) => {
   return (
     <div className="p-4 flex-1 flex flex-col">
       <div className="pb-4 border-b-2 border-custom-dark-blue flex items-center justify-between">
-        <h2 className="text-lg">Menu</h2>
+        <h2 className="text-lg text-custom-blue">Menu</h2>
         <AddItem restaurantIds={restaurantIds} />
       </div>
 

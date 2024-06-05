@@ -54,7 +54,7 @@ const Restaurants = ({ id }: { id: string }) => {
 
   return (
     <div className="p-4 flex-1">
-      <h2 className="pb-4 border-b-2 border-custom-dark-blue text-lg">
+      <h2 className="pb-4 border-b-2 border-custom-dark-blue text-lg text-custom-blue">
         Restaurants
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-4 gap-2">

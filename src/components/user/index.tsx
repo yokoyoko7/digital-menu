@@ -1,5 +1,5 @@
 const User = () => {
-  return <div>User</div>;
+  return <div className="flex-1">User</div>;
 };
 
 export default User;

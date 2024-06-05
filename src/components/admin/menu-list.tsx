@@ -68,7 +68,7 @@ const MenuList = ({ restaurantIds }: MenuListProps) => {
       <div className="flex items-center">
         <Select onValueChange={(value) => setId(value)}>
           <SelectTrigger
-            className="w-1/4 md:w-1/2 text-custom-black font-bold rounded-r-none"
+            className="w-full md:w-1/2 text-custom-black font-bold rounded-r-none"
             disabled={loading}
           >
             <SelectValue placeholder="Select a restaurant" />
