@@ -96,23 +96,24 @@ const MenuList = ({ restaurantIds }: MenuListProps) => {
         </div>
       )}
 
-      <div className="py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {menu.length > 0 &&
           menu.map((item) => (
             <div className="bg-custom-dark-blue rounded-md p-2">
+              <h3 className="text-custom-black text-lg font-bold">
+                {item.name}
+              </h3>
+
+              <p className="text-custom-blue font-bold">{item.description}</p>
+
               <div className="w-full flex items-center justify-between">
-                <h3 className="text-custom-black text-lg font-bold">
-                  {item.name}
-                </h3>
-                <span className="bg-custom-green ml-auto px-2 text-custom-black rounded-full shadow-sm font-bold">
+                <p className="text-custom-blue text-lg font-bold p-2 rounded-md text-end">
+                  Price: Rs. {item.price}
+                </p>
+                <span className="bg-custom-blue ml-auto px-2 text-custom-black rounded-full shadow-sm font-bold">
                   {item.category}
                 </span>
               </div>
-              <p className="text-custom-blue font-bold">{item.description}</p>
-
-              <p className="text-custom-blue text-lg font-bold p-2 rounded-md text-end">
-                Price: Rs. {item.price}
-              </p>
             </div>
           ))}
       </div>

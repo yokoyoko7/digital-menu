@@ -41,8 +41,6 @@ const Signin = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
-
       const url = `${import.meta.env.VITE_BACKEND_URL}/auth/v1/signin`;
       const response = await axios.post(url, values);
 
@@ -54,7 +52,7 @@ const Signin = () => {
       navigate("/home");
     } catch (error) {
       toast({
-        title: "Invalid credentials",
+        title: "Something went wrong",
         variant: "destructive",
       });
     } finally {
