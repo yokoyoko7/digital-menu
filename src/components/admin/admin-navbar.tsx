@@ -5,7 +5,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "../ui/navigation-menu";
-import { Home, QrCode, SquareMenu, Utensils } from "lucide-react";
+import { Home, ListOrdered, QrCode, SquareMenu, Utensils } from "lucide-react";
 
 const AdminNavbar = () => {
   return (
@@ -43,6 +43,15 @@ const AdminNavbar = () => {
             >
               <QrCode className="h-4 w-4" />
               <span className="hidden md:block">QR Codes</span>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem className={navigationMenuTriggerStyle()}>
+            <Link
+              to="/home/orders"
+              className="flex items-center justify-center gap-2"
+            >
+              <ListOrdered className="h-4 w-4" />
+              <span className="hidden md:block">Orders</span>
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>

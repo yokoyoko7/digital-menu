@@ -14,6 +14,14 @@ const Navbar = () => {
 
   const handleSignout = () => {
     localStorage.removeItem("token");
+
+    if (
+      localStorage.getItem("restaurantId") &&
+      localStorage.getItem("restaurantId") !== null
+    ) {
+      localStorage.removeItem("token");
+    }
+
     navigate("/");
   };
 

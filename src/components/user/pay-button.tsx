@@ -15,10 +15,12 @@ type RestaurantData = {
 
 const PayButton = ({ amount }: { amount: number }) => {
   const { toast } = useToast();
-  const { clearCart } = useCartStore((state) => state);
+  const { clearCart, cart } = useCartStore((state) => state);
   const [restaurant, setRestaurant] = useState<RestaurantData>();
 
   const restaurantId = localStorage.getItem("restaurantId");
+
+  const items = Array.from(cart.values()).map((menuItem) => menuItem.item._id);
 
   useEffect(() => {
     if (restaurantId) {
@@ -116,6 +118,7 @@ const PayButton = ({ amount }: { amount: number }) => {
           razorpaySignature: response.razorpay_signature,
           restaurantId,
           userId: user.userId,
+          items,
         };
 
         const url = `${import.meta.env.VITE_BACKEND_URL}/payment/v1/success`;
