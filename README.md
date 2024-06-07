@@ -13,7 +13,6 @@ The Digital Menu App is an innovative solution for restaurants to digitize their
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ## Features
