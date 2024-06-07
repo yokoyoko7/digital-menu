@@ -113,17 +113,19 @@ const QRCodes = ({ id }: { id: string }) => {
         </div>
       )}
 
-      <div className="py-4 flex-1 flex items-center justify-center">
-        {qrcodeUrl && (
-          <img
-            src={qrcodeUrl}
-            alt="QRCode"
-            width={300}
-            height={300}
-            className="rounded-md"
-          />
-        )}
-      </div>
+      {!loading && (
+        <div className="py-4 flex-1 flex items-center justify-center">
+          {qrcodeUrl && (
+            <img
+              src={qrcodeUrl}
+              alt="QRCode"
+              width={300}
+              height={300}
+              className="rounded-md"
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };
