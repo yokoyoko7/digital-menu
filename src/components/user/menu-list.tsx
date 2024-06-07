@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../ui/button";
-import { Minus, Plus, ScanBarcode } from "lucide-react";
+import { Loader2, Minus, Plus, ScanBarcode } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useToast } from "../ui/use-toast";
@@ -22,6 +22,7 @@ const MenuList = () => {
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [counters, setCounters] = useState<{ [key: string]: number }>({});
   const { addItem } = useCartStore((state) => state);
+  const [loading, setLoading] = useState(false);
 
   if (searchParams.get("result")) {
     localStorage.setItem("restaurantId", searchParams.get("result")!);
@@ -36,6 +37,7 @@ const MenuList = () => {
   }, [restaurantId]);
 
   const fetchMenuItems = async () => {
+    setLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/restaurant/v1/menu`;
 
@@ -57,6 +59,8 @@ const MenuList = () => {
         title: "Something went wrong",
       });
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,6 +103,12 @@ const MenuList = () => {
         {restaurantId && <Button onClick={handleNewScan}>Scan new QR</Button>}
       </div>
 
+      {loading && (
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 text-custom-blue animate-spin" />
+        </div>
+      )}
+
       {!restaurantId && (
         <div className="flex-1 py-4 flex items-center justify-center">
           <Button
@@ -114,9 +124,6 @@ const MenuList = () => {
 
       {restaurantId && (
         <div className="py-4 flex">
-          {menu.length === 0 && (
-            <p className="w-full text-center py-8">No items to show on Menu</p>
-          )}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {menu.map((item) => (
               <div

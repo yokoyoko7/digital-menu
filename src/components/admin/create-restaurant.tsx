@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -27,6 +27,7 @@ import {
 import { jwtDecode } from "jwt-decode";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
+import { useState } from "react";
 
 type UserData = {
   userId: string;
@@ -42,6 +43,7 @@ const formSchema = z.object({
 
 export const CreateRestaurant = () => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,6 +62,7 @@ export const CreateRestaurant = () => {
       userId: user.userId,
     };
 
+    setLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/restaurant/v1/create`;
       const config = {
@@ -81,6 +84,7 @@ export const CreateRestaurant = () => {
       });
     } finally {
       form.reset();
+      setLoading(false);
     }
   };
 
@@ -111,7 +115,11 @@ export const CreateRestaurant = () => {
                   <FormItem>
                     <FormLabel className="text-sm font-normal">Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter name" {...field} />
+                      <Input
+                        placeholder="Enter name"
+                        {...field}
+                        disabled={loading}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -126,7 +134,11 @@ export const CreateRestaurant = () => {
                       Description
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter description" {...field} />
+                      <Input
+                        placeholder="Enter description"
+                        {...field}
+                        disabled={loading}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,7 +153,11 @@ export const CreateRestaurant = () => {
                       Location
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter location" {...field} />
+                      <Input
+                        placeholder="Enter location"
+                        {...field}
+                        disabled={loading}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -151,11 +167,21 @@ export const CreateRestaurant = () => {
           </Form>
         </DialogHeader>
         <DialogFooter>
-          <Button form="create-restaurant-form" type="submit">
-            Create
+          <Button
+            form="create-restaurant-form"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin text-custom-blue" />
+            ) : (
+              "Create"
+            )}
           </Button>
           <DialogClose asChild>
-            <Button variant="destructive">Close</Button>
+            <Button variant="destructive" disabled={loading}>
+              Close
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

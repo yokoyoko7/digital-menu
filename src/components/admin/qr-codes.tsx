@@ -9,12 +9,14 @@ import {
 import axios from "axios";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 const QRCodes = ({ id }: { id: string }) => {
   const { toast } = useToast();
   const [restaurantIds, setRestaurantIds] = useState<string[]>([]);
   const [restaurant, setRestaurant] = useState("");
   const [qrcodeUrl, setQrcodeUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -50,6 +52,7 @@ const QRCodes = ({ id }: { id: string }) => {
   const handleClick = async () => {
     if (!restaurant) return;
 
+    setLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/qrcode/v1/generate`;
 
@@ -75,6 +78,8 @@ const QRCodes = ({ id }: { id: string }) => {
         title: "Something went wrong",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -101,6 +106,12 @@ const QRCodes = ({ id }: { id: string }) => {
           Get QR
         </Button>
       </div>
+
+      {loading && (
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 text-custom-blue animate-spin" />
+        </div>
+      )}
 
       <div className="py-4 flex-1 flex items-center justify-center">
         {qrcodeUrl && (

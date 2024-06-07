@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useToast } from "../ui/use-toast";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -36,6 +37,7 @@ const formSchema = z.object({
 const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,6 +49,7 @@ const Signup = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/auth/v1/signup`;
       const response = await axios.post(url, values);
@@ -63,6 +66,7 @@ const Signup = () => {
         variant: "destructive",
       });
     } finally {
+      setLoading(false);
       form.reset();
     }
   };
@@ -83,6 +87,7 @@ const Signup = () => {
                 <Input
                   placeholder="Enter email address"
                   className="w-full"
+                  disabled={loading}
                   {...field}
                 />
               </FormControl>
@@ -101,6 +106,7 @@ const Signup = () => {
                   type="password"
                   placeholder="Enter password"
                   className="w-full"
+                  disabled={loading}
                   {...field}
                 />
               </FormControl>
@@ -118,6 +124,7 @@ const Signup = () => {
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  disabled={loading}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select role" />
@@ -132,7 +139,11 @@ const Signup = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-custom-dark-blue w-full">
+        <Button
+          type="submit"
+          className="bg-custom-dark-blue w-full"
+          disabled={loading}
+        >
           Signin
         </Button>
       </form>

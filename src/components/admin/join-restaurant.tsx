@@ -14,11 +14,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useState } from "react";
 
 const formSchema = z.object({
   restaurantId: z.string(),
@@ -32,6 +33,7 @@ type UserData = {
 
 export const JoinRestaurant = () => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,6 +43,7 @@ export const JoinRestaurant = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(false);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/restaurant/v1/join`;
 
@@ -70,9 +73,10 @@ export const JoinRestaurant = () => {
         variant: "destructive",
       });
       console.log(error);
+    } finally {
+      setLoading(false);
+      form.reset();
     }
-
-    form.reset();
   };
 
   return (
@@ -105,6 +109,7 @@ export const JoinRestaurant = () => {
                       <Input
                         placeholder="Enter restaurant ID"
                         className="text-custom-black"
+                        disabled={loading}
                         {...field}
                       />
                     </FormControl>
@@ -115,11 +120,17 @@ export const JoinRestaurant = () => {
           </Form>
         </DialogHeader>
         <DialogFooter>
-          <Button form="join-restaurant-form" type="submit">
-            Join
+          <Button form="join-restaurant-form" type="submit" disabled={loading}>
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin text-custom-blue" />
+            ) : (
+              "Join"
+            )}
           </Button>
           <DialogClose asChild>
-            <Button variant="destructive">Close</Button>
+            <Button variant="destructive" disabled={loading}>
+              Close
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

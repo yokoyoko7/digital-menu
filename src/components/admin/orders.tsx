@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
-import { Dot } from "lucide-react";
+import { Dot, Loader2 } from "lucide-react";
 
 import {
   Select,
@@ -43,7 +43,9 @@ const Orders = ({ id }: { id: string }) => {
   const [restaurantIds, setRestaurantIds] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<{
+    [key: string]: "Pending" | "Approved" | "Cancelled" | "Served";
+  }>({});
 
   useEffect(() => {
     if (id) {
@@ -108,14 +110,14 @@ const Orders = ({ id }: { id: string }) => {
   };
 
   const handleUpdateStatus = async (orderID: string) => {
-    if (!selectedStatus || !selectedId) return;
+    if (!selectedStatus[orderID] || !selectedId) return;
 
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/payment/v1/update`;
 
       const data = {
         orderId: orderID,
-        status: selectedStatus,
+        status: selectedStatus[orderID],
       };
 
       const config = {
@@ -135,7 +137,12 @@ const Orders = ({ id }: { id: string }) => {
       toast({
         title: "Status updates",
       });
-      handleClick();
+
+      orders.find((order) => {
+        if (order._id === orderID) {
+          order.status = selectedStatus[orderID];
+        }
+      });
     } catch (error) {
       toast({
         title: "Something went wrong",
@@ -181,7 +188,13 @@ const Orders = ({ id }: { id: string }) => {
         </Button>
       </div>
 
-      {orders.length > 0 && (
+      {loading && (
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-custom-blue" />
+        </div>
+      )}
+
+      {orders.length > 0 && !loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 py-4">
           {orders.map((order) => (
             <div
@@ -213,8 +226,10 @@ const Orders = ({ id }: { id: string }) => {
 
               <div className="flex w-full items-center justify-between pt-2">
                 <Select
-                  onValueChange={(value) => setSelectedStatus(value)}
-                  value={selectedStatus}
+                  onValueChange={(
+                    value: "Pending" | "Cancelled" | "Approved" | "Served"
+                  ) => setSelectedStatus({ [order._id]: value })}
+                  value={selectedStatus[order._id]}
                 >
                   <SelectTrigger className="flex-1 text-custom-black border-0 rounded-r-none">
                     <SelectValue placeholder="Update Status" />

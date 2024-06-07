@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -29,6 +30,7 @@ const formSchema = z.object({
 const Signin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,6 +42,7 @@ const Signin = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/auth/v1/signin`;
       const response = await axios.post(url, values);
@@ -56,6 +59,7 @@ const Signin = () => {
         variant: "destructive",
       });
     } finally {
+      setLoading(false);
       form.reset();
     }
   };
@@ -76,6 +80,7 @@ const Signin = () => {
                 <Input
                   placeholder="Enter email address"
                   className="w-full"
+                  disabled={loading}
                   {...field}
                 />
               </FormControl>
@@ -94,6 +99,7 @@ const Signin = () => {
                   type="password"
                   placeholder="Enter password"
                   className="w-full"
+                  disabled={loading}
                   {...field}
                 />
               </FormControl>
@@ -102,7 +108,11 @@ const Signin = () => {
           )}
         />
 
-        <Button type="submit" className="bg-custom-dark-blue w-full">
+        <Button
+          type="submit"
+          className="bg-custom-dark-blue w-full"
+          disabled={loading}
+        >
           Signin
         </Button>
       </form>
