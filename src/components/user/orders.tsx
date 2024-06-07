@@ -2,7 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
-import { Divide, Dot, Loader2 } from "lucide-react";
+import { Dot, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 
 type MenuItem = {
