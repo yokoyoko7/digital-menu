@@ -13,7 +13,13 @@ type RestaurantData = {
   name: string;
 };
 
-const PayButton = ({ amount }: { amount: number }) => {
+const PayButton = ({
+  amount,
+  tableNumber,
+}: {
+  amount: number;
+  tableNumber: number;
+}) => {
   const { toast } = useToast();
   const { clearCart, cart } = useCartStore((state) => state);
   const [restaurant, setRestaurant] = useState<RestaurantData>();
@@ -21,6 +27,8 @@ const PayButton = ({ amount }: { amount: number }) => {
   const restaurantId = localStorage.getItem("restaurantId");
 
   const items = Array.from(cart.values()).map((menuItem) => menuItem.item._id);
+
+  console.log("TABLE NUMBER--", tableNumber);
 
   useEffect(() => {
     if (restaurantId) {
@@ -68,6 +76,13 @@ const PayButton = ({ amount }: { amount: number }) => {
   };
 
   const displayRazorpay = async () => {
+    if (!tableNumber || tableNumber === 0) {
+      return toast({
+        title: "Enter a table number",
+        variant: "destructive",
+      });
+    }
+
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -119,6 +134,7 @@ const PayButton = ({ amount }: { amount: number }) => {
           restaurantId,
           userId: user.userId,
           items,
+          tableNumber,
         };
 
         const url = `${import.meta.env.VITE_BACKEND_URL}/payment/v1/success`;
@@ -148,7 +164,7 @@ const PayButton = ({ amount }: { amount: number }) => {
   };
 
   return (
-    <Button className="mt-10 mx-auto" onClick={displayRazorpay}>
+    <Button className="mx-auto" onClick={displayRazorpay}>
       <IndianRupee className="h-4 w-4 mr-2" />
       Pay Now
     </Button>

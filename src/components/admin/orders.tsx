@@ -28,6 +28,7 @@ type Order = {
   userId: string;
   createdAt: Date;
   _id: string;
+  tableNumber: number;
 };
 
 const statusColors = {
@@ -222,6 +223,7 @@ const Orders = ({ id }: { id: string }) => {
                     </span>
                   </div>
                 ))}
+                <p className="font-bold">Table number {order.tableNumber}</p>
               </div>
 
               <div className="flex w-full items-center justify-between pt-2">

@@ -3,9 +3,12 @@ import { ArchiveX } from "lucide-react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import PayButton from "./pay-button";
+import { Input } from "../ui/input";
+import { useState } from "react";
 
 const Cart = () => {
   const { cart, calculateTotalPrice } = useCartStore((state) => state);
+  const [tableNumber, setTableNumber] = useState(0);
   const navigate = useNavigate();
 
   return (
@@ -53,7 +56,18 @@ const Cart = () => {
             </div>
           </div>
 
-          <PayButton amount={calculateTotalPrice()} />
+          <div className="flex items-center gap-4 w-full lg:w-1/4 mx-auto mt-10">
+            <Input
+              type="number"
+              placeholder="Enter table number"
+              value={tableNumber}
+              onChange={(e) => setTableNumber(parseInt(e.target.value))}
+            />
+            <PayButton
+              amount={calculateTotalPrice()}
+              tableNumber={tableNumber}
+            />
+          </div>
         </div>
       )}
     </div>
