@@ -3,6 +3,8 @@
 
 ## Description
 
+BACKEND REPOSITORY - https://github.com/amratansh12/digital-menu-api
+
 The Digital Menu App is an innovative solution for restaurants to digitize their menus using QR codes. It features role-based authentication for Admins and Users, allowing restaurant managers to easily create and manage menus and orders, and enabling users to conveniently browse menus and place orders through a QR code scan.
 
 ## Table of Contents
